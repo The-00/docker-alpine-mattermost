@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  mattermost:
+    build: .
+    environment:
+        - ADMIN_USER=admin
+        - ADMIN_PASS=Wqaxszcde+1
+        - ADMIN_MAIL=tt@unicolo.re
+        - MM_SERVICESETTINGS_SITEURL="http://localhost:8080"
+        - MM_SERVICESETTINGS_LISTENADDRESS=":8080"
+        - MM_TEAMSETTINGS_SITENAME="test_local"
+        - MM_TEAMSETTINGS_ENABLEUSERCREATION="false"
+        - MM_SQLSETTINGS_DRIVERNAME="mysql"
+        - MM_SQLSETTINGS_DATASOURCE="mattermost:mattermost@tcp(mariadb:3306)/mattermost"
+    ports:
+      - 8080:8080
+    volumes:
+      - mattermost-data:/mattermost/data
+      - mattermost-config:/mattermost/config
+    networks:
+      default:
+
+  mariadb:
+    image: dotriver/mariadb
+    environment:
+      - ROOT_PASSWORD=password
+      - DB_0_NAME=mattermost
+      - DB_0_PASS=mattermost
+    ports:
+      - 3306:3306
+      - 8081:80
+    volumes:
+      - mariadb-data:/var/lib/mysql/
+      - mariadb-config:/etc/mysql/
+    networks:
+      default:
+
+volumes:
+    mattermost-data:
+    mattermost-config:
+    mariadb-data:
+    mariadb-config:
+

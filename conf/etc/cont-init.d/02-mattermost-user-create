@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv ash
+
+mkdir -p /var/tmp
+
+inotifywait -m /var/tmp -e create -e moved_to |
+  while read path action file; do
+    if [[ "$file" =~ .*socket$ ]]; then
+      echo "creating $ADMIN_USER user"
+      /mattermost/bin/mmctl --local user create --username $ADMIN_USER --email $ADMIN_MAIL --password $ADMIN_PASS --system-admin --email-verified --disable-welcome-email
+    fi
+  done &
+
+
+

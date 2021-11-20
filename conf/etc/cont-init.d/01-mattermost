@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv ash
+
+PUID=2000
+PGID=2000
+
+# create users
+addgroup -g ${PGID} mattermost
+adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost
+chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins
+
+# default config
+echo "export MM_SERVICESETTINGS_ENABLELOCALMODE=\"true\"" > /tmp/mattermost_env
+
+# dynamic config
+env | grep "MM.*" -o | sed "s/^MM/export MM/g" >> /tmp/mattermost_env
+
+echo 0 > /tmp/mattermost

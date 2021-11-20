@@ -1,0 +1,6 @@
+#!/bin/sh
+NAME="MATTERMOST"
+COMMAND="source /tmp/mattermost_env; /mattermost/bin/mattermost server"
+WAIT="/tmp/mattermost"
+
+exec service-handler "$NAME" "$COMMAND" "$WAIT"
