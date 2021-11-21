@@ -5,15 +5,37 @@ services:
   mattermost:
     build: .
     environment:
-        - ADMIN_USER=admin
+        - ADMIN_USER=admin.mattermost
         - ADMIN_PASS=Wqaxszcde+1
         - ADMIN_MAIL=tt@unicolo.re
+
+
         - MM_SERVICESETTINGS_SITEURL="http://localhost:8080"
         - MM_SERVICESETTINGS_LISTENADDRESS=":8080"
-        - MM_TEAMSETTINGS_SITENAME="test_local"
-        - MM_TEAMSETTINGS_ENABLEUSERCREATION="false"
-        - MM_SQLSETTINGS_DRIVERNAME="mysql"
+
+        - MM_TEAMSETTINGS_SITENAME=test_local
+        - MM_TEAMSETTINGS_ENABLEUSERCREATION=false
+
+        - MM_SQLSETTINGS_DRIVERNAME=mysql
         - MM_SQLSETTINGS_DATASOURCE="mattermost:mattermost@tcp(mariadb:3306)/mattermost"
+
+        - MM_LDAPSETTINGS_ENABLE=true
+        - MM_LDAPSETTINGS_LOGINFIELDNAME=uid
+        - MM_LDAPSETTINGS_LDAPSERVER=fd
+        - MM_LDAPSETTINGS_LDAPPORT=389
+        - MM_LDAPSETTINGS_BINDUSERNAME="cn=admin,dc=example,dc=fr"
+        - MM_LDAPSETTINGS_BINDPASSWORD=password
+        - MM_LDAPSETTINGS_BASEDN="dc=example,dc=fr"
+        - MM_LDAPSETTINGS_USERFILTER="(&(|(objectclass=organizationalPerson))(|(memberof=cn=chat,ou=groups,dc=example,dc=fr)))"
+        - MM_LDAPSETTINGS_GROUPFILTER="(&(|(objectclass=groupOfNames))(|(cn=chat)(cn=admin)))"
+        - MM_LDAPSETTINGS_ENABLEADMINFILTER=true
+        - MM_LDAPSETTINGS_ADMINFILTER="(&(|(objectclass=organizationalPerson))(|(memberof=cn=admin,ou=groups,dc=example,dc=fr)))"
+        - MM_LDAPSETTINGS_IDATTRIBUTE="uid"
+        - MM_LDAPSETTINGS_LOGINIDATTRIBUTE="uid"
+        - MM_LDAPSETTINGS_USERNAMEATTRIBUTE="givenName"
+        - MM_LDAPSETTINGS_EMAILATTRIBUTE="mail"
+        - MM_LDAPSETTINGS_FIRSTNAMEATTRIBUTE="givenName"
+        - MM_LDAPSETTINGS_LASTNAMEATTRIBUTE="sn"
     ports:
       - 8080:8080
     volumes:
@@ -37,9 +59,26 @@ services:
     networks:
       default:
 
+  fd:
+    image: dotriver/fusiondirectory
+    ports:
+      - "8082:80"
+    environment:
+      - DOMAIN=example.fr
+      - ADMIN_PASS=password
+      - CONFIG_PASS=password
+      - FD_ADMIN=admin
+      - FD_PASS=password
+      - INSTANCE=EXAMPLE
+    volumes:
+      - openldap-data:/var/lib/openldap/
+      - openldap-config:/etc/openldap/
+
 volumes:
     mattermost-data:
     mattermost-config:
     mariadb-data:
     mariadb-config:
+    openldap-config:
+    openldap-data:
 

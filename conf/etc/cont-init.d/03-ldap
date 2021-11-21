@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv ash
+
+# install db
+# in the same bdd as mattermost
+
+# template nginx configuration
+# for the port
+
+echo 0 > /tmp/nginx
