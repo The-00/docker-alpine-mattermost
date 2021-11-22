@@ -19,6 +19,10 @@ services:
         - MM_SQLSETTINGS_DRIVERNAME=mysql
         - MM_SQLSETTINGS_DATASOURCE="mattermost:mattermost@tcp(mariadb:3306)/mattermost"
 
+        # if set to true (default false), it will use the MM_LDAPSETTINGS_* variables to use the workaround
+        - LDAP_TE_ENABLE=true
+        - LDAP_TE_PORT=8085
+        
         - MM_LDAPSETTINGS_ENABLE=true
         - MM_LDAPSETTINGS_LOGINFIELDNAME=uid
         - MM_LDAPSETTINGS_LDAPSERVER=fd
@@ -38,6 +42,7 @@ services:
         - MM_LDAPSETTINGS_LASTNAMEATTRIBUTE="sn"
     ports:
       - 8080:8080
+      - 8085:8085
     volumes:
       - mattermost-data:/mattermost/data
       - mattermost-config:/mattermost/config
