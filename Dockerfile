@@ -24,6 +24,9 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins && 
 # install ldap-link
 RUN set -x \
     && apk add --no-cache add php7 php7-ldap php7-pgsql php7-mysqli php7-pdo php7-xml nginx \
+    && mkdir -p /run/nginx/ \
+    && rm -R /var/www/* || true \
+    && chown nginx:nginx /var/www/ /run/nginx/ \
     && rm -rf /tmp/* \
 
 ADD conf/ /
