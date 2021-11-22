@@ -14,7 +14,8 @@ docker version of mattermost based on alpine-s6 with auto create of admin user
 
 # Docker compose with mariadb in the repository
 
-# [In comming] Docker compose with LDAP configuration (but it is only MM_LDAP\*\* variables ;) )
+# [In comming] Docker compose with LDAP configuration
 
+I will use Mattermost-LDAP : https://github.com/Crivaledaz/Mattermost-LDAP
 
 ### you can find the image in docker hub : ttrova/mattermost
